@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { auth } from '../../lib/firebase';
 import {
   TextField,
   Button,
@@ -7,7 +8,19 @@ import {
 } from '@material-ui/core';
 import './styles.css';
 const Signup = ({ setshowSignup }) => {
+  const initialFormData = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  };
+
   const [loading, setLoading] = useState(false);
+  const [checked, setChecked] = useState(false);
+  const [formData, setFormData] = useState(initialFormData);
+  const [passwordError, setPasswordError] = useState({ state: false, msg: '' });
+  const [emailError, setEmailError] = useState({ state: false, msg: '' });
 
   const toggleSignUp = (e) => {
     e.preventDefault();
@@ -19,6 +32,59 @@ const Signup = ({ setshowSignup }) => {
       setLoading(false);
     }, 1500);
   };
+
+  const createAccount = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const error = formData.password === formData.confirmPassword;
+
+    if (!error) {
+      setPasswordError({ state: true, msg: 'Passwords do not match' });
+      setFormData({ ...formData, confirmPassword: '' });
+      setLoading(false);
+      return;
+    } else {
+      setPasswordError({ state: false, msg: '' });
+      setEmailError({ state: false, msg: '' });
+    }
+
+    auth
+      .createUserWithEmailAndPassword(formData.email, formData.password)
+      .then(() => {
+        auth.currentUser
+          .updateProfile({
+            displayName: `${formData.firstName} ${formData.lastName}`,
+          })
+          .then(() => {
+            setLoading(false);
+            setPasswordError({ state: false, msg: '' });
+            setEmailError({ state: false, msg: '' });
+          });
+      })
+      .catch((error) => {
+        if (error.code === 'auth/email-already-in-use') {
+          setEmailError({ state: true, msg: 'Email is already in use.' });
+          setLoading(false);
+          setFormData({ ...formData, email: '' });
+        }
+        if (error.code === 'auth/invalid-email') {
+          setEmailError('Email address in not properly formatted');
+          setFormData({ ...formData, email: '' });
+          setLoading(false);
+        } else if (error.code === 'auth/weak-password') {
+          setPasswordError('Password should be atleast 6 characters');
+          setFormData({ ...formData, password: '', confirmPassword: '' });
+          setLoading(false);
+        }
+      });
+  };
+
+  const buttonDisabled =
+    !formData.email ||
+    !formData.firstName ||
+    !formData.lastName ||
+    !formData.password ||
+    !formData.confirmPassword;
 
   return (
     <div className="signup__container">
@@ -42,12 +108,20 @@ const Signup = ({ setshowSignup }) => {
                   label="First Name"
                   variant="outlined"
                   className="signup__nameInput"
+                  value={formData.firstName}
+                  onChange={(e) =>
+                    setFormData({ ...formData, firstName: e.target.value })
+                  }
                 />
                 <TextField
                   id="outlined-basic"
                   label="Last Name"
                   variant="outlined"
                   className="signup__nameInput"
+                  value={formData.lasttName}
+                  onChange={(e) =>
+                    setFormData({ ...formData, lastName: e.target.value })
+                  }
                 />
               </div>
 
@@ -55,8 +129,17 @@ const Signup = ({ setshowSignup }) => {
                 id="outlined-basic"
                 label="Email"
                 variant="outlined"
-                helperText="You can use letters, numbers & periods"
                 type="email"
+                value={formData.email}
+                error={emailError.state}
+                helperText={
+                  emailError.msg
+                    ? `${emailError.msg}`
+                    : `You can use letters, numbers & periods`
+                }
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
               />
               <div className="signup__passwordInputs">
                 <div className="signup__passwordWrapper">
@@ -65,22 +148,48 @@ const Signup = ({ setshowSignup }) => {
                     label="Password"
                     variant="outlined"
                     className="signup__passwordInput"
-                    type="Password"
+                    type={checked ? 'text' : 'password'}
+                    value={formData.password}
+                    error={passwordError.state}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
                   />
                   <TextField
                     id="outlined-basic"
                     label="Confirm Password"
                     variant="outlined"
                     className="signup__passwordInput"
-                    type="Password"
+                    type={checked ? 'text' : 'password'}
+                    value={formData.confirmPassword}
+                    error={passwordError.state}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        confirmPassword: e.target.value,
+                      })
+                    }
                   />
                 </div>
-                <p className="signup__helpertext">
-                  Use 8 or more characters with a mix of letters, numbers &
-                  symbols
+                <p
+                  className={`signup__helpertext ${
+                    passwordError.state && 'signin__error'
+                  }`}
+                >
+                  {passwordError.msg
+                    ? passwordError.msg
+                    : `Use 8 or more characters with a mix of letters, numbers &
+                  symbols`}
                 </p>
                 <FormControlLabel
-                  control={<Checkbox name="checkedB" color="primary" />}
+                  control={
+                    <Checkbox
+                      checked={checked}
+                      name="checkedB"
+                      color="primary"
+                      onChange={() => setChecked(!checked)}
+                    />
+                  }
                   label="Show password"
                 />
               </div>
@@ -97,6 +206,8 @@ const Signup = ({ setshowSignup }) => {
                   className="signup__button"
                   variant="contained"
                   color="primary"
+                  onClick={createAccount}
+                  disabled={buttonDisabled}
                 >
                   Create
                 </Button>
