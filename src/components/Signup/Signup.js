@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   TextField,
   Button,
@@ -7,16 +7,23 @@ import {
 } from '@material-ui/core';
 import './styles.css';
 const Signup = ({ setshowSignup }) => {
+  const [loading, setLoading] = useState(false);
+
   const toggleSignUp = (e) => {
     e.preventDefault();
-    setshowSignup(false);
+
+    setLoading(true);
+
+    setTimeout(() => {
+      setshowSignup(false);
+      setLoading(false);
+    }, 1500);
   };
 
   return (
     <div className="signup__container">
-      <div className="signup">
-        <div className="login__loading signup__loading" />
-
+      <div className={`signup  ${loading && 'login__fade'}`}>
+        {loading && <div className="login__loading signup__loading" />}
         <div className="signup__container">
           <div className="signup__left">
             <img
