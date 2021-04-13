@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { auth } from '../../lib/firebase';
 import Signup from '../Signup/Signup';
 import './styles.css';
-const Sigin = () => {
+const Signin = () => {
   const [showSignup, setshowSignup] = useState(false);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -112,4 +112,4 @@ const Sigin = () => {
   );
 };
 
-export default Sigin;
+export default Signin;
