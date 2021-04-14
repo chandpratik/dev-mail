@@ -25,9 +25,7 @@ const Signin = () => {
     setLoading(true);
     auth
       .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        alert('logged in');
-      })
+      .then(() => {})
       .catch((err) => {
         setLoading(false);
         if (err.code === 'auth/wrong-password') {

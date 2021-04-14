@@ -10,7 +10,8 @@ export function useLocalContext() {
 export function ContextProvider({ children }) {
   const [currentUser, setCurrentUser] = useState('');
   const [appState, setAppState] = useState('empty');
-
+  const [drawerOpen, setDrawerOpen] = useState(true);
+  const [composeOpen, setComposeOpen] = useState(false);
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
@@ -27,6 +28,10 @@ export function ContextProvider({ children }) {
     currentUser,
     appState,
     setAppState,
+    drawerOpen,
+    setDrawerOpen,
+    composeOpen,
+    setComposeOpen,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
