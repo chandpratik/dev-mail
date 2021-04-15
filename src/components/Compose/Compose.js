@@ -1,12 +1,64 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles.css';
 import { useLocalContext } from '../../context/context';
 import { Button } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import MenuItem from './MenuItem';
+import { v4 as uuidv4 } from 'uuid';
+import { db } from '../../lib/firebase';
 
 const Compose = () => {
-  const { setComposeOpen } = useLocalContext();
+  const { setComposeOpen, currentUser, category } = useLocalContext();
+  const [recipents, setRecipents] = useState('');
+  const [subject, setSubject] = useState('');
+  const [body, setBody] = useState('');
+  const [id, setId] = useState('');
+
+  useEffect(() => {
+    setId(uuidv4());
+  }, []);
+
+  const createMailId = () => {
+    setId(uuidv4());
+  };
+
+  const sendMail = () => {
+    setComposeOpen(false);
+    createMailId();
+
+    db.collection('SentMails')
+      .doc(currentUser.email)
+      .collection('mails')
+      .doc(id)
+      .set({
+        id: id,
+        category: category,
+        recipents: recipents,
+        subject: subject,
+        body: body,
+        sender: currentUser.email,
+        read: true,
+        senderName: currentUser.displayName,
+      })
+      .then(() => addRecivedMail())
+      .catch((err) => console.log(err));
+  };
+  const addRecivedMail = () => {
+    db.collection('RecivedMails')
+      .doc(recipents)
+      .collection('mail')
+      .doc(id)
+      .set({
+        id: id,
+        category: category,
+        recipents: recipents,
+        subject: subject,
+        body: body,
+        sender: currentUser.email,
+        senderName: currentUser.displayName,
+        read: false,
+      });
+  };
   return (
     <div className="compose">
       <div className="compose__container">
@@ -20,21 +72,21 @@ const Compose = () => {
         <input
           className="compose__input"
           placeholder="Recipents"
-          //   value={recipents}
-          //   onChange={(e) => setRecipents(e.target.value)}
+          value={recipents}
+          onChange={(e) => setRecipents(e.target.value)}
         />
 
         <input
           className="compose__input"
           placeholder="Subject"
-          //   value={subject}
-          //   onChange={(e) => setSubject(e.target.value)}
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
         />
 
         <textarea
           className="compose__textarea"
-          //   value={body}
-          //   onChange={(e) => setBody(e.target.value)}
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
         />
 
         <div className="compose__footer">
@@ -43,7 +95,7 @@ const Compose = () => {
               className="compose__btn"
               color="primary"
               variant="contained"
-              //   onClick={sendMail}
+              onClick={sendMail}
             >
               Send
             </Button>

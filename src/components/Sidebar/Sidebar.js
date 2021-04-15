@@ -3,6 +3,7 @@ import { useLocalContext } from '../../context/context';
 import './styles.css';
 import clsx from 'clsx';
 import { makeStyles, Drawer } from '@material-ui/core';
+import SidebarNavBtn from './SidebarNavBtn';
 
 const drawerWidth = 256;
 
@@ -53,7 +54,7 @@ const Sidebar = ({ children }) => {
           <div
             onClick={() => setComposeOpen(true)}
             className={`sidebar__compose ${
-              !drawerOpen && 'sidebar__composeClose '
+              !drawerOpen && 'sidebar__composeClose'
             }`}
           >
             <img
@@ -61,8 +62,9 @@ const Sidebar = ({ children }) => {
               src="/assets/svg/plus.png"
               alt="add"
             />
-            <p>Compose</p>
+            <p className={`${!drawerOpen && 'pClose'}`}>Compose</p>
           </div>
+          <SidebarNavBtn />
         </Drawer>
         {children}
       </div>
