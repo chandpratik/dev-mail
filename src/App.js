@@ -26,11 +26,6 @@ function App() {
             {appState === 'loading' && <Loading />}
           </div>
         </Route>
-        {onScreenMails.map((value, index) => (
-          <Route key={index} path={`/${value.id}`}>
-            <HomePage mailData={value} showMails={false} />
-          </Route>
-        ))}
       </Switch>
     </Router>
   );
