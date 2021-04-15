@@ -1,70 +1,67 @@
-# Getting Started with Create React App
+<h1>DevMail App</h1>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## [Check out the live version ](https://devmail.netlify.app/)
 
-## Available Scripts
+<h2>Screenshot</h2>
 
-In the project directory, you can run:
+<img src="./src/images/ss.png" style="box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);" />
 
-### `npm start`
+<h1>🛠 Installation & Set Up</h1>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+#### 1. Install and use the correct version of Node
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
+npm install
+```
 
-### `npm test`
+#### 2. Start the development server
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+npm start
+```
 
-### `npm run build`
+# 🛠 Set Up for firebase
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Create a Firebase project in the <a href="https://console.firebase.google.com/">Firebase console</a>, click Add project, then follow the on-screen instructions to create a Firebase project or to add Firebase services to an existing GCP project.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2) Navigate to the Database section of the Firebase console. You'll be prompted to select an existing Firebase project. Follow the database creation workflow.
+3) Select a starting mode for your Firebase Security Rules:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   - Test mode
 
-### `npm run eject`
+     Good for getting started with the mobile and web client libraries, but allows anyone to read and overwrite your data. After testing, **make sure to review the [Understand Firebase Realtime Database Rules](https://firebase.google.com/docs/database/security) section.**
+     To get started with the web, iOS, or Android SDK, select test mode.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+   - Locked mode
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+     Denies all reads and writes from mobile and web clients. Your authenticated application servers can still access your database.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+4.  Click **Done**.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+When you enable Realtime Database, it also enables the API in the [Cloud API Manager](https://console.cloud.google.com/projectselector/apis/api/firebasedatabase.googleapis.com/overview).
 
-## Learn More
+## Firebase config object
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+To initialize Firebase in your app, you need to provide your app's Firebase project configuration.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+import  firebase  from  "firebase/app";
+import  "firebase/firestore";
 
-### Code Splitting
+const  firebaseConfig = firebase.initializeApp({
+apiKey:  "API-KEY",
+authDomain:  ""project-id.firebaseapp.com"",
+databaseURL:  "https://project-id.firebaseio.com",
+projectId:  "project-id",
+storageBucket:  "project-id.appspot.com",
+messagingSenderId:  "sender-id",
+appId:  "app-id",
+measurementId:  "G-measurement-id",
+});
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+export { firebaseConfig  as  firebase };
+```
 
-### Analyzing the Bundle Size
+<br />
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# #🚀HappyCoding

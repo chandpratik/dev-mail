@@ -12,6 +12,7 @@ import React, { useState } from 'react';
 import { useLocalContext } from '../../context/context';
 import Mail from '../Mail/Mail';
 import { useMailContext } from '../../context/MailContext';
+
 import './styles.css';
 
 const Main = () => {
