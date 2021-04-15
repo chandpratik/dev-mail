@@ -1,17 +1,17 @@
 import React from 'react';
-import { Header, Sidebar, Compose, ViewMail } from '..';
+import { Header, Sidebar, Compose } from '..';
 import { useLocalContext } from '../../context/context';
 import Main from '../Main/Main';
 
 import './styles.css';
-const Home = ({ showMails = true, mailData }) => {
+const Home = () => {
   const { composeOpen } = useLocalContext();
   return (
     <div className="home">
       {composeOpen && <Compose />}
       <Header />
       <Sidebar>
-        {showMails ? <Main /> : <ViewMail mailData={mailData} />}
+        <Main />
       </Sidebar>
     </div>
   );
