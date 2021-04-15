@@ -5,6 +5,7 @@
   height: 100%;
   flex-direction: column;
   overflow: hidden;
+  z-index: 999;
 }
 
 .compose__container {
