@@ -80,46 +80,54 @@ export function MailContextProvider({ children }) {
       return e.read === false;
     });
 
+    let a1 = array.length;
+    setInboxUnreadNo(a1);
+    // array.map((value, index) => {
+    //   let a1 = 1 + index;
+    //   setInboxUnreadNo(a1);
+
+    //   return a1;
+    // });
+  }, [receivedMails]);
+
+  useEffect(() => {
+    let array = receivedMails.filter((e) => {
+      return e.read === false;
+    });
+
     let primaryUnread = array.filter((e) => {
       return e.category === 'Primary';
     });
 
-    primaryUnread.map((value, index) => {
-      let a1 = 1 + index;
-      setPrimaryUnreadNo(a1);
+    let a1 = primaryUnread.length;
+    setPrimaryUnreadNo(a1);
 
-      return a1;
-    });
+    // primaryUnread.map((value, index) => {
+    //   let a1 = 1 + index;
+    //   setPrimaryUnreadNo(a1);
+
+    //   return a1;
+    // });
   }, [receivedMails]);
+
 
   useEffect(() => {
     let array = receivedMails.filter((e) => {
       return e.read === false;
     });
 
-    array.map((value, index) => {
-      let a1 = 1 + index;
-      setInboxUnreadNo(a1);
-
-      return a1;
-    });
-  }, [receivedMails]);
-
-  useEffect(() => {
-    let array = receivedMails.filter((e) => {
-      return e.read === false;
-    });
-
-    let primaryUnread = array.filter((e) => {
+    let SocialUnread = array.filter((e) => {
       return e.category === 'Social';
     });
 
-    primaryUnread.map((value, index) => {
-      let a1 = 1 + index;
-      setSocialUnreadNo(a1);
+    let a1 = SocialUnread.length;
+    setSocialUnreadNo(a1);
+    // primaryUnread.map((value, index) => {
+    //   let a1 = 1 + index;
+    //   setSocialUnreadNo(a1);
 
-      return a1;
-    });
+    //   return a1;
+    // });
   }, [receivedMails]);
 
   useEffect(() => {
@@ -127,16 +135,18 @@ export function MailContextProvider({ children }) {
       return e.read === false;
     });
 
-    let primaryUnread = array.filter((e) => {
+    let promosUnreadNo = array.filter((e) => {
       return e.category === 'Promotions';
     });
 
-    primaryUnread.map((value, index) => {
-      let a1 = 1 + index;
-      setPromosUnreadNo(a1);
+    let a1 = promosUnreadNo.length;
+    setPromosUnreadNo(a1);
+    // promosUnreadNo.map((value, index) => {
+    //   let a1 = 1 + index;
+    //   setPromosUnreadNo(a1);
 
-      return a1;
-    });
+    //   return a1;
+    // });
   }, [receivedMails]);
 
   useEffect(() => {
@@ -144,16 +154,18 @@ export function MailContextProvider({ children }) {
       return e.read === false;
     });
 
-    let primaryUnread = array.filter((e) => {
+    let updatesUnreadNo = array.filter((e) => {
       return e.category === 'Updates';
     });
 
-    primaryUnread.map((value, index) => {
-      let a1 = 1 + index;
-      setUpdatesUnreadNo(a1);
+    let a1 = updatesUnreadNo.length;
+    setUpdatesUnreadNo(a1);
+    // primaryUnread.map((value, index) => {
+    //   let a1 = 1 + index;
+    //   setUpdatesUnreadNo(a1);
 
-      return a1;
-    });
+    //   return a1;
+    // });
   }, [receivedMails]);
 
   const value = {
